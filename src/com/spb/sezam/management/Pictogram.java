@@ -1,11 +1,9 @@
 package com.spb.sezam.management;
 
 import java.io.File;
-import java.util.Comparator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 
 public class Pictogram  implements Comparable<Pictogram>{

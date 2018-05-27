@@ -12,5 +12,5 @@ import android.widget.Button;
  */
 public interface IPictogramHolder {
 	
-	public View.OnClickListener getOnPictogramClickListener();
+	View.OnClickListener getOnPictogramClickListener();
 }

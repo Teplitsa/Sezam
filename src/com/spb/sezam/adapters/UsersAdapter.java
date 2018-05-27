@@ -24,16 +24,10 @@ public class UsersAdapter extends ArrayAdapter<JSONObject> {
 	private final List<JSONObject> users;
 	
 	static class ViewHolder {
-		public TextView text;
-		public ImageView onlineIcon;
-		public TextView unreadCount;
+		 TextView text;
+		 ImageView onlineIcon;
+		 TextView unreadCount;
 	}
-	
-	/*public UsersAdapter(Context context, JSONObject[] users) {
-		super(context, R.layout.row_layout, users);
-		this.context = context;
-		this.users = users;
-	}*/
 	
 	public UsersAdapter(Context context, List<JSONObject> users) {
 		super(context, R.layout.row_layout, users);
@@ -90,7 +84,7 @@ public class UsersAdapter extends ArrayAdapter<JSONObject> {
 		
 		//has unread messages
 		if (unreadMessagesCount != null && !"0".equals(unreadMessagesCount)) {
-			holder.unreadCount.setText("+" + unreadMessagesCount);
+			holder.unreadCount.setText("+" + unreadMessagesCount); //number anyway
 			holder.unreadCount.setBackgroundResource(R.drawable.unread_message);
 		} else {
 			//no unread message

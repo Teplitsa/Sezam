@@ -10,25 +10,22 @@ import android.app.Application;
 public class App extends Application {
 	// uncaught exception handler variable
     private UncaughtExceptionHandler defaultUEH;
-    
- // handler listener
-    private UncaughtExceptionHandler unCaughtExceptionHandler =
-        new UncaughtExceptionHandler() {
+
+    public App() {
+        defaultUEH = Thread.getDefaultUncaughtExceptionHandler();
+        // setup handler for uncaught exception 
+        UncaughtExceptionHandler unCaughtExceptionHandler = new UncaughtExceptionHandler() {
             @Override
             public void uncaughtException(Thread thread, Throwable ex) {
 
                 // here I do logging of exception to a db
-            	 Logger SlfLogger = LoggerFactory.getLogger(App.class);
-                 SlfLogger.error("Error accured in thread " + thread.getName(), ex);
+                Logger SlfLogger = LoggerFactory.getLogger(App.class);
+                SlfLogger.error("Error accured in thread " + thread.getName(), ex);
 
                 // re-throw critical exception further to the os (important)
                 defaultUEH.uncaughtException(thread, ex);
             }
         };
-        
-    public App() {
-        defaultUEH = Thread.getDefaultUncaughtExceptionHandler();
-        // setup handler for uncaught exception 
         Thread.setDefaultUncaughtExceptionHandler(unCaughtExceptionHandler);
     }
 }

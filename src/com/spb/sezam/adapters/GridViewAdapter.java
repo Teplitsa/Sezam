@@ -4,15 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.spb.sezam.IPictogramHolder;
 import com.spb.sezam.R;
 import com.spb.sezam.management.Pictogram;
 import com.spb.sezam.widged.GridViewItem;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,15 +51,7 @@ public class GridViewAdapter extends BaseAdapter {
 		//holder.pictogramIcon.setContentDescription(pic.getPath());
 		
 		ImageLoader imageLoader = ImageLoader.getInstance();
-		imageLoader.displayImage(pic.getPathWithAssests(), holder.pictogramIcon);/*, new SimpleImageLoadingListener() {
-			@Override
-			public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-				BitmapDrawable bd = new BitmapDrawable(context.getResources(), loadedImage);
-				((GridViewItem)view).setImageDrawable(bd);
-			}
-		});*/
-		
-		//holder.pictogramIcon.setTag(pic);
+		imageLoader.displayImage(pic.getPathWithAssests(), holder.pictogramIcon);
 		
 		//was a niche method to use :)
 		holder.pictogramIcon.setOnClickListener(picHolder.getOnPictogramClickListener());

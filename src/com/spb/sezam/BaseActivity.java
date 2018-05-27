@@ -64,16 +64,16 @@ public class BaseActivity extends ActionBarActivity {
 		VKUIHelper.onActivityResult(this, requestCode, resultCode, data);
 	}
 
-	protected void startActivity(Class<? extends Activity> a) {
+	void startActivity(Class<? extends Activity> a) {
 		Intent startNewActivityOpen = new Intent(this, a);
 		startActivityForResult(startNewActivityOpen, 0);
 	}
 
-	public void initVKSdk() {
+	void initVKSdk() {
 		VKSdk.initialize(sdkListener, "4619202");
 	}
 	
-	public static void authorize(){
+	static void authorize(){
 		VKSdk.authorize(myScope);
 	}
 }

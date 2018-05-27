@@ -1,18 +1,12 @@
 package com.spb.sezam.management;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import android.content.Context;
 import android.content.res.AssetManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 
 public class PictogramManager {
@@ -64,13 +58,6 @@ public class PictogramManager {
 				collectPictograms(pGroup, am);
 			}
 			Collections.sort(firstLevelGroups);
-
-			//for test
-			/*BitmapDrawable bd = new BitmapDrawable(ctx.getResources(), am.open(FOLDER_NAME + File.separator + name));
-			Pictogram p = new Pictogram(name);
-			p.setIcon(bd);
-			linearPicotgrams.add(p);*/
-			
 		}
 	}
 	
@@ -84,10 +71,8 @@ public class PictogramManager {
 			if(name.matches(imagePatern)){
 				//maybe here
 				Log.w("Path", "Path = " + fullFolderPath + File.separator + name);
-				//BitmapDrawable bd = new BitmapDrawable(ctx.getResources(), am.open(fullFolderPath + File.separator + name));
-				
+
 				Pictogram pictogram= new Pictogram(path + File.separator + name);
-				//pictogram.setIcon(bd);
 				pGroup.addInnerPictogram(pictogram);
 			} else {
 				Log.i("GROUP", "GROUP = " + fullFolderPath + File.separator + name);

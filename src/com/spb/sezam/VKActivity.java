@@ -27,7 +27,7 @@ public class VKActivity extends BaseActivity {
         initVKSdk();
         
         Button b = (Button)findViewById(R.id.sign_in_button);
-        //predefined in .xml as Войти
+        //predefined in .xml as пїЅпїЅпїЅпїЅпїЅ
         if (VKSdk.wakeUpSession()) {
         	Log.e("wakeUp","wakeUp");
             startActivity(MessageActivity.class);
@@ -38,12 +38,9 @@ public class VKActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
             	if (VKSdk.isLoggedIn()){
-            		Log.e("Uje logged in","Uje Loged in");
+            		Log.e("logged in"," Loged in");
             	}
             	authorize();
-                if (VKSdk.isLoggedIn()){
-            		Log.e("Uje logged in2","Uje Loged in2");
-            	}
             }
         });
     }

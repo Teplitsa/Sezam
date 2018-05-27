@@ -25,7 +25,7 @@ import android.widget.LinearLayout;
 
 public class FriendsActivity extends Activity {
 
-	public final static String EXTRA_MESSAGE = "com.spbu.sezam.MESSAGE";
+	private final static String EXTRA_MESSAGE = "com.spbu.sezam.MESSAGE";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +42,8 @@ public class FriendsActivity extends Activity {
 					showFriends(response.json.getJSONObject("response").getJSONArray("items"));
 				} catch (JSONException e) {
 					e.printStackTrace();
-					ErrorUtil.showError(FriendsActivity.this	, "Ошибка при обработке списка друзей");
+					ErrorUtil.showError(FriendsActivity.this	, "Error happened!");
 				}
-				//VKRequest request = new VKRequest("messages.send", VKParameters.from("user_id", "222290520", "message", "Hi user 222290520 !"));
-				//request.executeWithListener(this);
 			}
 
 			@Override
@@ -60,11 +58,7 @@ public class FriendsActivity extends Activity {
 	private void showFriends(JSONArray friendsJson) throws JSONException {
 		//create Sezam Bot for test messages
 		JSONObject sezamBot = new JSONObject();
-		sezamBot.put("last_name", "ТЕСТ");
-		sezamBot.put("first_name", "СЕЗАМ");
-		sezamBot.put("id", "53759969"); //old profile ID
-		sezamBot.put("online", "0");
-		
+
 		//shift array
 		friendsJson.put(friendsJson.length(),"");
 		int count = friendsJson.length();
@@ -80,8 +74,6 @@ public class FriendsActivity extends Activity {
 		for (int i = 0; i < count; i++) {
 			btnArray[i] = new Button(this);
 			friends.addView(btnArray[i]);
-			//final String f = String.valueOf(i);
-			
 		}
 		updateFirends(friendsJson);
 	}

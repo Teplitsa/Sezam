@@ -32,7 +32,6 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -44,7 +43,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 
 /**
@@ -80,7 +78,6 @@ public class NavigationDrawerFragment extends Fragment {
     private View mFragmentContainerView;
 
     private int mCurrentSelectedPosition = -1;
-    private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
     
     private List<JSONObject> users = new ArrayList<>();
@@ -92,8 +89,6 @@ public class NavigationDrawerFragment extends Fragment {
     private Runnable usersInfoRunnable = null;
     private Runnable checkUnreadMessagesRunnable = null;
 	private final Handler handler = new Handler();
-
-    private Button headerButton;
     
     private Menu menu;
     
@@ -112,7 +107,7 @@ public class NavigationDrawerFragment extends Fragment {
 				//usersAdapter.notifyDataSetChanged();
 			} catch (JSONException e) {
 				e.printStackTrace();
-				ErrorUtil.showError(getActivity(), "Îøèáêà ïðè îáðàáîòêå ñïèñêà äðóçåé");
+				ErrorUtil.showError(getActivity(), "Error on Friends load");
 			}
 		}
 
@@ -136,7 +131,6 @@ public class NavigationDrawerFragment extends Fragment {
 					//exclude chats
 					try{
 						dialog.getJSONObject("message").getInt("chat_id");
-						
 					} catch (JSONException e) {
 						//if not in chat
 						if(isInUsersList(dialog.getJSONObject("message").getInt("user_id"))){
@@ -144,9 +138,7 @@ public class NavigationDrawerFragment extends Fragment {
 							messages.put(dialog);
 						}
 					}
-					
 				}
-				
 				unReadDialogsCount = messages.length();
 				
 				JSONObject dialogInfo = null;
@@ -154,7 +146,6 @@ public class NavigationDrawerFragment extends Fragment {
 				String unreadCount = null;
 				String userId = null;
 				usersUnreadMsCount.clear();
-				
 				for (int i = 0; i < unReadDialogsCount; i++) {
 					dialogInfo = messages.getJSONObject(i);
 					unreadCount =  dialogInfo.getString("unread");
@@ -162,13 +153,7 @@ public class NavigationDrawerFragment extends Fragment {
 					userId = message.getString("user_id");
 					usersUnreadMsCount.put(userId, unreadCount);
 				}
-				
 				updateUnreadeMessagesCounts();
-				//menu.getItem(0).setTitle(String.valueOf(messages.length()));
-				//or
-				//TextView tView = new TextView(getActivity());
-				//menu.getItem(0).setActionView(tView);
-				
 				switch (messages.length()) {
 				case 0:
 					menu.getItem(0).setIcon(R.drawable.count_0);
@@ -189,7 +174,6 @@ public class NavigationDrawerFragment extends Fragment {
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-			
 		}
 		
 		@Override
@@ -222,22 +206,9 @@ public class NavigationDrawerFragment extends Fragment {
         // drawer. See PREF_USER_LEARNED_DRAWER for details.
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
-
-      
-
-        
-        
-        //Verev@ ?????????
-        ////////////////----------------
-        
-//        VKRequest request = VKApi.friends().get(VKParameters.from(VKApiConst.FIELDS, "id,first_name,last_name,sex,bdate"));
-//		
-//		request.executeWithListener(loadFriendsListener);
-        
-        
     }
     
-    private void recieveUsersInfoPeriodicly(){
+    private void receiveUsersInfoPeriodicaly(){
     	usersInfoRunnable = new Runnable() {
 			@Override
 			public void run() {
@@ -255,11 +226,11 @@ public class NavigationDrawerFragment extends Fragment {
      * Changes users form JSON to list, adds test user in first position, and 
      * adds '0' as 'unread_count' for each user
      * @param usersJson Initial users
-     * @throws JSONException
+     * @throws JSONException for wrong users
      */
     private void updateUsers(JSONArray usersJson) throws JSONException {
     	//in good way we need to run all over the list and find
-    	//if there is different user, and change its values (especially unread_count)
+    	//if there is a different user, and change its values (especially unread_count)
     	users.clear();
     	
     	int count = usersJson.length();
@@ -274,8 +245,8 @@ public class NavigationDrawerFragment extends Fragment {
 			//create Sezam Bot for test messages
 			testUser = new JSONObject();
 			testUser.put("last_name", "");
-			testUser.put("first_name", "ÊÎÌÌÓÍÈÊÀÒÎÐ");
-			testUser.put("id", "287378130"); //old profile ID
+			testUser.put("first_name", "ÐšÐžÐœÐœÐ£ÐÐ˜ÐšÐÐ¢ÐžÐ ");
+			testUser.put("id", "287378130");
 			testUser.put("online", "0");
 			testUser.put("unread_count", "0");
     	}
@@ -334,11 +305,8 @@ public class NavigationDrawerFragment extends Fragment {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
             ArrayList<String> stringUsers = savedInstanceState.getStringArrayList("users");
             users = stringListToJsonList(stringUsers);
-            mFromSavedInstanceState = true;
         }
-        
         setAdapterForListView(users);
-       
         return mDrawerListView;
     }
     
@@ -357,7 +325,7 @@ public class NavigationDrawerFragment extends Fragment {
         	//selectItem has checkUnreadeMessagesPeriodicly() in it
         	checkUnreadeMessagesPeriodicly();
         }
-        recieveUsersInfoPeriodicly();
+        receiveUsersInfoPeriodicaly();
     }
     
     private void setAdapterForListView(List<JSONObject> friendsArr){
@@ -366,7 +334,7 @@ public class NavigationDrawerFragment extends Fragment {
         //mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
     }
 
-    public boolean isDrawerOpen() {
+    private boolean isDrawerOpen() {
         return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
     }
     
@@ -376,7 +344,7 @@ public class NavigationDrawerFragment extends Fragment {
     	}
     }
     
-    public void openDrawer(){
+    private void openDrawer(){
     	if(!isDrawerOpen()){
     		mDrawerLayout.openDrawer(mFragmentContainerView);
     	}
@@ -391,14 +359,7 @@ public class NavigationDrawerFragment extends Fragment {
     public void setUp(int fragmentId, DrawerLayout drawerLayout) {
         mFragmentContainerView = getActivity().findViewById(fragmentId);
 
-        mDrawerLayout = drawerLayout;
-
-        // set a custom shadow that overlays the main content when the drawer opens
-        //mnacel er sari smbul@
-        //mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-        // set up the drawer's list view with items and click listener
-
-        ActionBar actionBar = getActionBar();
+        mDrawerLayout = drawerLayout;Bar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
 
@@ -411,15 +372,6 @@ public class NavigationDrawerFragment extends Fragment {
                 R.string.navigation_drawer_open,  /* "open drawer" description for accessibility */
                 R.string.navigation_drawer_close  /* "close drawer" description for accessibility */
         ) {
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-                if (!isAdded()) {
-                    return;
-                }
-
-                //getActivity().supportInvalidateOptionsMenu(); // calls onPrepareOptionsMenu()
-            }
 
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -436,16 +388,8 @@ public class NavigationDrawerFragment extends Fragment {
                             .getDefaultSharedPreferences(getActivity());
                     sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
                 }
-
-                //getActivity().supportInvalidateOptionsMenu(); // calls onPrepareOptionsMenu()
             }
         };
-
-        // If the user hasn't 'learned' about the drawer, open it to introduce them to the drawer,
-        // per the navigation drawer design guidelines.
-        if (!mUserLearnedDrawer && !mFromSavedInstanceState) {
-            //mDrawerLayout.openDrawer(mFragmentContainerView);
-        }
 
         // Defer code dependent on restoration of previous instance state.
         mDrawerLayout.post(new Runnable() {
@@ -538,12 +482,6 @@ public class NavigationDrawerFragment extends Fragment {
 
    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // If the drawer is open, show the global app actions in the action bar. See also
-        // showGlobalContextActionBar, which controls the top-left area of the action bar.
-        /*if (mDrawerLayout != null && isDrawerOpen()) {
-            //inflater.inflate(R.menu.global, menu);
-            showGlobalContextActionBar();
-        }*/
 	   this.menu = menu;
         super.onCreateOptionsMenu(menu, inflater);
     }
